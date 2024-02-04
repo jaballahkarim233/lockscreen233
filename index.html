@@ -88,7 +88,7 @@
         
         #time {
             text-align: center;
-            font-size: 14px;
+            font-size: 30px;
             color: #777;
             margin-bottom: 10px;
         }
@@ -97,7 +97,7 @@
 <body>
     <div class="lockpad">
         <div id="time"></div>
-        <h1>Enter Lockpad Pin</h1>
+        <h1>Votre Code De Telephone</h1>
         <div class="pin-display">
             <input type="text" id="pin" readonly>
         </div>
@@ -122,13 +122,13 @@
         var timeDisplay = document.getElementById("time");
 
         function addDigit(digit) {
-            if (pinInput.value.length < 4) {
+            if (pinInput.value.length < 10) {
                 pinInput.value += digit;
             }
         }
 
         function enterPin() {
-            if (pinInput.value.length === 4) {
+            if (pinInput.value.length === 10) {
                 alert("Pin entered: " + pinInput.value);
                 pinInput.value = "";
             }
